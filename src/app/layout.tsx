@@ -38,7 +38,7 @@ export default function RootLayout({
       lang="tr"
       className={`${cormorant.className} ${nunito.variable} ${caveat.variable}`}
     >
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

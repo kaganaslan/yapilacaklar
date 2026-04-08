@@ -18,12 +18,13 @@ export interface Item {
   done: boolean;
   note: string;
   order: number;
+  created_by: string;
   created_at: string;
   updated_at: string;
   photos: Photo[];
 }
 
-export function useItems() {
+export function useItems(currentUser: string) {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -81,6 +82,7 @@ export function useItems() {
       done: false,
       note: "",
       order: 0,
+      created_by: currentUser,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       photos: [],
@@ -89,7 +91,7 @@ export function useItems() {
 
     const { data, error } = await supabase
       .from("items")
-      .insert({ text })
+      .insert({ text, created_by: currentUser })
       .select("*, photos(*)")
       .single();
 

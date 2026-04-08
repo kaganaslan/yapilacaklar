@@ -138,6 +138,21 @@ export default function ItemCard({
                 📸 {item.photos.length}
               </span>
             )}
+            {item.created_by && (
+              <span
+                style={{
+                  fontSize: "0.65rem",
+                  color: "#b8aa94",
+                  fontFamily: "'Nunito', sans-serif",
+                  background: "rgba(200,185,160,0.15)",
+                  borderRadius: "8px",
+                  padding: "1px 6px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {item.created_by === "serra" ? "🌸" : "⚡"}
+              </span>
+            )}
           </div>
         )}
       </div>

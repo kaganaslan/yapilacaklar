@@ -6,11 +6,17 @@ import { usePhotos } from "@/hooks/usePhotos";
 import FloatingHearts from "@/components/FloatingHearts";
 import ItemCard from "@/components/ItemCard";
 import Lightbox from "@/components/Lightbox";
+import PasswordGate, { UserKey, clearStoredUser } from "@/components/PasswordGate";
 import { HeartIcon, PlusIcon } from "@/components/Icons";
 
-export default function Home() {
+const USER_META: Record<UserKey, { emoji: string; label: string }> = {
+  serra: { emoji: "🌸", label: "Serra" },
+  kagan: { emoji: "⚡", label: "Kağan" },
+};
+
+function App({ user }: { user: UserKey }) {
   const { items, loading, addItem, toggleDone, updateNote, removeItem } =
-    useItems();
+    useItems(user);
   const { removePhoto } = usePhotos();
 
   const [newText, setNewText] = useState("");
@@ -55,10 +61,17 @@ export default function Home() {
     if (expandedId === id) setExpandedId(null);
   };
 
+  const handleLogout = () => {
+    clearStoredUser();
+    window.location.reload();
+  };
+
   const pending = items.filter((i) => !i.done);
   const completed = items.filter((i) => i.done);
   const progress =
     items.length > 0 ? Math.round((completed.length / items.length) * 100) : 0;
+
+  const meta = USER_META[user];
 
   return (
     <div
@@ -76,6 +89,51 @@ export default function Home() {
       {lightbox && (
         <Lightbox src={lightbox} onClose={() => setLightbox(null)} />
       )}
+
+      {/* User badge + logout */}
+      <div
+        style={{
+          position: "fixed",
+          top: "14px",
+          right: "14px",
+          zIndex: 100,
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: "0.75rem",
+            color: "#a09580",
+            background: "rgba(255,255,252,0.7)",
+            backdropFilter: "blur(8px)",
+            border: "1px solid rgba(200,185,160,0.3)",
+            borderRadius: "20px",
+            padding: "4px 10px",
+          }}
+        >
+          {meta.emoji} {meta.label}
+        </span>
+        <button
+          onClick={handleLogout}
+          title="Çıkış"
+          style={{
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: "0.7rem",
+            color: "#c9b8a4",
+            background: "rgba(255,255,252,0.6)",
+            backdropFilter: "blur(8px)",
+            border: "1px solid rgba(200,185,160,0.25)",
+            borderRadius: "20px",
+            padding: "4px 10px",
+            cursor: "pointer",
+          }}
+        >
+          çıkış
+        </button>
+      </div>
 
       <div
         style={{
@@ -383,5 +441,13 @@ export default function Home() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <PasswordGate>
+      {(user) => <App user={user} />}
+    </PasswordGate>
   );
 }
