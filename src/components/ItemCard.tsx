@@ -151,7 +151,7 @@ export default function ItemCard({
                   whiteSpace: "nowrap",
                 }}
               >
-                {item.created_by === "serra" ? "🌸" : "⚡"}
+                {item.created_by === "serra" ? "🐒" : "⚡"}
               </span>
             )}
           </div>

@@ -5,7 +5,7 @@ import { HeartIcon } from "@/components/Icons";
 import { loginAction } from "@/app/actions";
 
 const USERS = [
-  { key: "serra", label: "Serra", emoji: "🌸" },
+  { key: "serra", label: "Serra", emoji: "🐒" },
   { key: "kagan", label: "Kağan", emoji: "⚡" },
 ] as const;
 

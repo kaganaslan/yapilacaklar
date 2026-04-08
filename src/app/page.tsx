@@ -10,7 +10,7 @@ import PasswordGate, { UserKey, clearStoredUser } from "@/components/PasswordGat
 import { HeartIcon, PlusIcon } from "@/components/Icons";
 
 const USER_META: Record<UserKey, { emoji: string; label: string }> = {
-  serra: { emoji: "🌸", label: "Serra" },
+  serra: { emoji: "🐒", label: "Serra" },
   kagan: { emoji: "⚡", label: "Kağan" },
 };
 
