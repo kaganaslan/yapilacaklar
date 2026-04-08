@@ -24,7 +24,7 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "yapılacaklar — ama seninle ✨",
+  title: "yapılacaklar — ama seninle",
   description: "Serra & Kağan için romantik yapılacaklar listesi",
 };
 

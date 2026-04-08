@@ -180,7 +180,7 @@ function App({ user }: { user: UserKey }) {
               marginTop: "2px",
             }}
           >
-            ama seninle ✨
+            ama seninle
           </p>
 
           {/* Progress bar */}
@@ -436,7 +436,7 @@ function App({ user }: { user: UserKey }) {
               color: "#b8aa94",
             }}
           >
-            seninle her an bir macera 💫
+          
           </p>
         </div>
       </div>
