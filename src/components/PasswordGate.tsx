@@ -112,7 +112,7 @@ export default function PasswordGate({
             marginBottom: "32px",
           }}
         >
-          ama seninle ✨
+          ama seninle 
         </p>
 
         {!selected ? (
@@ -190,7 +190,7 @@ export default function PasswordGate({
                   margin: 0,
                 }}
               >
-                yanlış şifre 🥺
+                şifre yanlış, kağanı ara
               </p>
             )}
             <button
@@ -207,7 +207,7 @@ export default function PasswordGate({
                 cursor: "pointer",
               }}
             >
-              gir 💕
+              gir
             </button>
             <button
               type="button"

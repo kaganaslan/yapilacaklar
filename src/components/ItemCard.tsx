@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Item } from "@/hooks/useItems";
 import { usePhotos } from "@/hooks/usePhotos";
 import Checkbox from "./Checkbox";
@@ -49,6 +49,7 @@ export default function ItemCard({
 }: ItemCardProps) {
   const { uploadPhoto } = usePhotos();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const hasPhotos = item.photos && item.photos.length > 0;
   const hasNote = item.note && item.note.length > 0;
@@ -326,29 +327,27 @@ export default function ItemCard({
                 <CameraIcon /> foto
               </button>
               <div style={{ flex: 1 }} />
-              <button
-                className="action-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemove();
-                }}
-                style={{
-                  height: "30px",
-                  border: "none",
-                  background: "transparent",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                  color: "#ccc0ad",
-                  fontSize: "0.72rem",
-                  fontFamily: "'Nunito', sans-serif",
-                  padding: "0 8px",
-                }}
-              >
-                <TrashIcon /> sil
-              </button>
+              {confirmDelete ? (
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }} onClick={(e) => e.stopPropagation()}>
+                  <span style={{ fontSize: "0.72rem", color: "#a09580", fontFamily: "'Nunito', sans-serif" }}>emin misin?</span>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onRemove(); }}
+                    style={{ height: "26px", padding: "0 10px", border: "none", background: "#c9785d", color: "white", borderRadius: "8px", fontSize: "0.72rem", fontFamily: "'Nunito', sans-serif", cursor: "pointer" }}
+                  >evet</button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setConfirmDelete(false); }}
+                    style={{ height: "26px", padding: "0 10px", border: "1px solid #d4cabb", background: "transparent", color: "#a09580", borderRadius: "8px", fontSize: "0.72rem", fontFamily: "'Nunito', sans-serif", cursor: "pointer" }}
+                  >hayır</button>
+                </div>
+              ) : (
+                <button
+                  className="action-btn"
+                  onClick={(e) => { e.stopPropagation(); setConfirmDelete(true); }}
+                  style={{ height: "30px", border: "none", background: "transparent", borderRadius: "8px", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", color: "#ccc0ad", fontSize: "0.72rem", fontFamily: "'Nunito', sans-serif", padding: "0 8px" }}
+                >
+                  <TrashIcon /> sil
+                </button>
+              )}
             </div>
           )}
           {isDone && (
@@ -362,29 +361,27 @@ export default function ItemCard({
               }}
             >
               <div style={{ flex: 1 }} />
-              <button
-                className="action-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemove();
-                }}
-                style={{
-                  height: "28px",
-                  border: "none",
-                  background: "transparent",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                  color: "#ccc0ad",
-                  fontSize: "0.72rem",
-                  fontFamily: "'Nunito', sans-serif",
-                  padding: "0 8px",
-                }}
-              >
-                <TrashIcon /> sil
-              </button>
+              {confirmDelete ? (
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }} onClick={(e) => e.stopPropagation()}>
+                  <span style={{ fontSize: "0.72rem", color: "#a09580", fontFamily: "'Nunito', sans-serif" }}>emin misin?</span>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onRemove(); }}
+                    style={{ height: "26px", padding: "0 10px", border: "none", background: "#c9785d", color: "white", borderRadius: "8px", fontSize: "0.72rem", fontFamily: "'Nunito', sans-serif", cursor: "pointer" }}
+                  >evet</button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setConfirmDelete(false); }}
+                    style={{ height: "26px", padding: "0 10px", border: "1px solid #d4cabb", background: "transparent", color: "#a09580", borderRadius: "8px", fontSize: "0.72rem", fontFamily: "'Nunito', sans-serif", cursor: "pointer" }}
+                  >hayır</button>
+                </div>
+              ) : (
+                <button
+                  className="action-btn"
+                  onClick={(e) => { e.stopPropagation(); setConfirmDelete(true); }}
+                  style={{ height: "28px", border: "none", background: "transparent", borderRadius: "8px", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", color: "#ccc0ad", fontSize: "0.72rem", fontFamily: "'Nunito', sans-serif", padding: "0 8px" }}
+                >
+                  <TrashIcon /> sil
+                </button>
+              )}
             </div>
           )}
         </div>
