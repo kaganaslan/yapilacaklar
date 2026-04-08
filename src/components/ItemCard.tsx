@@ -23,7 +23,7 @@ interface ItemCardProps {
   onNoteChange: (text: string) => void;
   onSaveNote: () => void;
   onCancelNote: () => void;
-  onPhotoAdded: () => void;
+  onPhotoAdded: () => Promise<void> | void;
   onRemovePhoto: (photoId: string, storagePath: string) => void;
   onLightbox: (src: string) => void;
 }
@@ -50,6 +50,7 @@ export default function ItemCard({
   const { uploadPhoto } = usePhotos();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const hasPhotos = item.photos && item.photos.length > 0;
   const hasNote = item.note && item.note.length > 0;
@@ -57,8 +58,10 @@ export default function ItemCard({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setUploading(true);
     await uploadPhoto(item.id, file);
-    onPhotoAdded();
+    await onPhotoAdded();
+    setUploading(false);
     e.target.value = "";
   };
 
@@ -305,16 +308,18 @@ export default function ItemCard({
               </button>
               <button
                 className="action-btn"
+                disabled={uploading}
                 onClick={(e) => {
                   e.stopPropagation();
-                  fileInputRef.current?.click();
+                  if (!uploading) fileInputRef.current?.click();
                 }}
                 style={{
                   height: "30px",
                   border: "none",
                   background: "transparent",
                   borderRadius: "8px",
-                  cursor: "pointer",
+                  cursor: uploading ? "default" : "pointer",
+                  opacity: uploading ? 0.6 : 1,
                   display: "flex",
                   alignItems: "center",
                   gap: "5px",
@@ -324,7 +329,7 @@ export default function ItemCard({
                   padding: "0 8px",
                 }}
               >
-                <CameraIcon /> foto
+                <CameraIcon /> {uploading ? "yükleniyor..." : "foto"}
               </button>
               <div style={{ flex: 1 }} />
               {confirmDelete ? (

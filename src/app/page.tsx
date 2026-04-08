@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useItems } from "@/hooks/useItems";
-import { usePhotos } from "@/hooks/usePhotos";
 import FloatingHearts from "@/components/FloatingHearts";
 import ItemCard from "@/components/ItemCard";
 import Lightbox from "@/components/Lightbox";
@@ -15,9 +14,8 @@ const USER_META: Record<UserKey, { emoji: string; label: string }> = {
 };
 
 function App({ user }: { user: UserKey }) {
-  const { items, loading, addItem, toggleDone, updateNote, removeItem, refetch } =
+  const { items, loading, addItem, toggleDone, updateNote, removeItem, removePhoto, refetch } =
     useItems(user);
-  const { removePhoto } = usePhotos();
 
   const [newText, setNewText] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);

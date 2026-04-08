@@ -7,6 +7,7 @@ import {
   toggleDoneAction,
   updateNoteAction,
   removeItemAction,
+  removePhotoAction,
 } from "@/app/actions";
 
 export interface Photo {
@@ -90,5 +91,15 @@ export function useItems(currentUser: string) {
     await removeItemAction(id);
   }, []);
 
-  return { items, loading, addItem, toggleDone, updateNote, removeItem, refetch: fetchItems };
+  const removePhoto = useCallback(async (photoId: string, storagePath: string) => {
+    setItems((prev) =>
+      prev.map((item) => ({
+        ...item,
+        photos: item.photos.filter((p) => p.id !== photoId),
+      }))
+    );
+    await removePhotoAction(photoId, storagePath);
+  }, []);
+
+  return { items, loading, addItem, toggleDone, updateNote, removeItem, removePhoto, refetch: fetchItems };
 }
