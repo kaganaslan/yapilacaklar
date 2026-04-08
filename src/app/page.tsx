@@ -15,7 +15,7 @@ const USER_META: Record<UserKey, { emoji: string; label: string }> = {
 };
 
 function App({ user }: { user: UserKey }) {
-  const { items, loading, addItem, toggleDone, updateNote, removeItem } =
+  const { items, loading, addItem, toggleDone, updateNote, removeItem, refetch } =
     useItems(user);
   const { removePhoto } = usePhotos();
 
@@ -317,7 +317,7 @@ function App({ user }: { user: UserKey }) {
                 onNoteChange={setNoteText}
                 onSaveNote={() => handleSaveNote(item.id)}
                 onCancelNote={() => setEditingNote(null)}
-                onPhotoAdded={() => {}}
+                onPhotoAdded={refetch}
                 onRemovePhoto={(photoId, storagePath) =>
                   removePhoto(photoId, storagePath)
                 }
@@ -383,7 +383,7 @@ function App({ user }: { user: UserKey }) {
                     onNoteChange={setNoteText}
                     onSaveNote={() => handleSaveNote(item.id)}
                     onCancelNote={() => setEditingNote(null)}
-                    onPhotoAdded={() => {}}
+                    onPhotoAdded={refetch}
                     onRemovePhoto={(photoId, storagePath) =>
                       removePhoto(photoId, storagePath)
                     }

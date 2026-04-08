@@ -17,18 +17,24 @@ export function usePhotos() {
     const ext = file.name.split(".").pop() || "jpg";
     const path = `${itemId}/${timestamp}.${ext}`;
 
-    const { error: uploadError } = await supabase.storage
+    console.log("[uploadPhoto] uploading to path:", path);
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
       .from("polaroids")
       .upload(path, file);
 
+    console.log("[uploadPhoto] upload response:", uploadData, uploadError);
+
     if (uploadError) {
-      console.error("Upload error:", uploadError);
+      console.error("[uploadPhoto] Upload error:", uploadError);
       return null;
     }
 
     const { data: urlData } = supabase.storage
       .from("polaroids")
       .getPublicUrl(path);
+
+    console.log("[uploadPhoto] public URL:", urlData.publicUrl);
 
     const dateLabel = formatDate(timestamp);
 
@@ -38,8 +44,10 @@ export function usePhotos() {
       .select()
       .single();
 
+    console.log("[uploadPhoto] insert response:", data, insertError);
+
     if (insertError) {
-      console.error("Insert error:", insertError);
+      console.error("[uploadPhoto] Insert error:", insertError);
       return null;
     }
 

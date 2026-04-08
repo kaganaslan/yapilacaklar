@@ -127,5 +127,5 @@ export function useItems(currentUser: string) {
     await supabase.from("items").delete().eq("id", id);
   }, []);
 
-  return { items, loading, addItem, toggleDone, updateNote, removeItem };
+  return { items, loading, addItem, toggleDone, updateNote, removeItem, refetch: fetchItems };
 }
