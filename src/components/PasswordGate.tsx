@@ -2,20 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { HeartIcon } from "@/components/Icons";
+import { loginAction } from "@/app/actions";
 
 const USERS = [
-  {
-    key: "serra",
-    label: "Serra",
-    emoji: "🌸",
-    password: process.env.NEXT_PUBLIC_SERRA_PASSWORD ?? "serra",
-  },
-  {
-    key: "kagan",
-    label: "Kağan",
-    emoji: "⚡",
-    password: process.env.NEXT_PUBLIC_KAGAN_PASSWORD ?? "kagan",
-  },
+  { key: "serra", label: "Serra", emoji: "🌸" },
+  { key: "kagan", label: "Kağan", emoji: "⚡" },
 ] as const;
 
 export type UserKey = "serra" | "kagan";
@@ -42,6 +33,7 @@ export default function PasswordGate({
   const [selected, setSelected] = useState<UserKey | null>(null);
   const [input, setInput] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -49,16 +41,19 @@ export default function PasswordGate({
     setReady(true);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const found = USERS.find((u) => u.key === selected);
-    if (found && input === found.password) {
-      localStorage.setItem(STORAGE_KEY, found.key);
-      setUser(found.key);
+    if (!selected) return;
+    setLoading(true);
+    const ok = await loginAction(selected, input);
+    setLoading(false);
+    if (ok) {
+      localStorage.setItem(STORAGE_KEY, selected);
+      setUser(selected);
     } else {
       setError(true);
       setInput("");
-      setTimeout(() => setError(false), 1500);
+      setTimeout(() => setError(false), 2000);
     }
   };
 
@@ -112,7 +107,7 @@ export default function PasswordGate({
             marginBottom: "32px",
           }}
         >
-          ama seninle 
+          ama seninle
         </p>
 
         {!selected ? (
@@ -169,6 +164,7 @@ export default function PasswordGate({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               autoFocus
+              disabled={loading}
               style={{
                 padding: "12px 16px",
                 border: `1.5px solid ${error ? "#c9785d" : "#d4cabb"}`,
@@ -195,6 +191,7 @@ export default function PasswordGate({
             )}
             <button
               type="submit"
+              disabled={loading}
               style={{
                 padding: "12px",
                 borderRadius: "14px",
@@ -204,10 +201,11 @@ export default function PasswordGate({
                 fontSize: "1rem",
                 fontFamily: "'Nunito', sans-serif",
                 fontWeight: 600,
-                cursor: "pointer",
+                cursor: loading ? "default" : "pointer",
+                opacity: loading ? 0.7 : 1,
               }}
             >
-              gir
+              {loading ? "..." : "gir"}
             </button>
             <button
               type="button"
