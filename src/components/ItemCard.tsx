@@ -26,6 +26,8 @@ interface ItemCardProps {
   onPhotoAdded: () => Promise<void> | void;
   onRemovePhoto: (photoId: string, storagePath: string) => void;
   onLightbox: (src: string) => void;
+  onUploadStart: () => void;
+  onUploadEnd: () => void;
 }
 
 export default function ItemCard({
@@ -46,6 +48,8 @@ export default function ItemCard({
   onPhotoAdded,
   onRemovePhoto,
   onLightbox,
+  onUploadStart,
+  onUploadEnd,
 }: ItemCardProps) {
   const { uploadPhoto } = usePhotos();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -59,9 +63,11 @@ export default function ItemCard({
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    onUploadStart();
     await uploadPhoto(item.id, file);
     await onPhotoAdded();
     setUploading(false);
+    onUploadEnd();
     e.target.value = "";
   };
 

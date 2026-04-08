@@ -24,6 +24,7 @@ function App({ user }: { user: UserKey }) {
   const [showCompleted, setShowCompleted] = useState(true);
   const [justCompleted, setJustCompleted] = useState<string | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
+  const [uploadingItemId, setUploadingItemId] = useState<string | null>(null);
 
   const handleAdd = () => {
     if (!newText.trim()) return;
@@ -40,6 +41,7 @@ function App({ user }: { user: UserKey }) {
   };
 
   const handleExpand = (id: string) => {
+    if (uploadingItemId) return;
     setExpandedId((prev) => (prev === id ? null : id));
     setEditingNote(null);
   };
@@ -320,6 +322,8 @@ function App({ user }: { user: UserKey }) {
                   removePhoto(photoId, storagePath)
                 }
                 onLightbox={setLightbox}
+                onUploadStart={() => { setUploadingItemId(item.id); setExpandedId(item.id); }}
+                onUploadEnd={() => setUploadingItemId(null)}
               />
             ))}
           </div>
@@ -386,6 +390,8 @@ function App({ user }: { user: UserKey }) {
                       removePhoto(photoId, storagePath)
                     }
                     onLightbox={setLightbox}
+                    onUploadStart={() => { setUploadingItemId(item.id); setExpandedId(item.id); }}
+                    onUploadEnd={() => setUploadingItemId(null)}
                   />
                 ))}
               </div>
