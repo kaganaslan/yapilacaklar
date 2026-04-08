@@ -68,7 +68,7 @@ export default function ItemCard({
   return (
     <div
       className="item-card"
-      onClick={onExpand}
+      onClick={uploading ? undefined : onExpand}
       style={{
         background: isDone
           ? "rgba(255,255,252,0.35)"
